@@ -24,13 +24,14 @@ jobs:
           dotnet build ./DepotDownloader.sln --configuration Release --property:OutputPath=./ReleaseOutput
           cp ./RoR2VersionSelector/ReleaseOutput/RoR2VersionSelector.exe ./DepotDownloader/ReleaseOutput/RoR2VersionSelector.exe
           mv ./DepotDownloader/ReleaseOutput/ ./build
+          zip -r binary.zip ./build
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: binary.zip
+          name: binary
           path: |
-            build/*
+            binary.zip
           
       - name: Generate Build Info
         id: var
@@ -89,12 +90,11 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: binary.zip
+          name: binary
 
       - name: Echo build sha256
         id: build_sha
         run: |
-          ls -al
           sha256sum binary.zip > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
