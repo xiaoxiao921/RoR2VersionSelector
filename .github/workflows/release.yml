@@ -94,7 +94,7 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          sha256sum release.zip > sha256.checksum
+          sha256sum binary.zip > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 
@@ -121,4 +121,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            release.zip
+            binary.zip
